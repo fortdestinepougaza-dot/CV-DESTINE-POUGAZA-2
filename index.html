@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Destiné POUGAZA | Technicien Réseau Télécom &amp; Développeur</title>
+    <!-- Google Fonts + Inter / Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (gratuit, pour icônes simples) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #050505;
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            color: #f8fafc;
+        }
+
+        /* Scrollbar stylée */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3b82f6;
+        }
+
+        /* Conteneurs */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Effets glassmorphism */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Animation fade-up simple */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-up {
+            animation: fadeUp 0.6s ease-out forwards;
+        }
+
+        /* Header flottant */
+        .navbar {
+            position: fixed;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 94%;
+            max-width: 1200px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 40px;
+            padding: 8px 20px;
+            z-index: 1100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 1.4rem;
+            color: #3b82f6;
+            cursor: pointer;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+        }
+
+        .nav-link {
+            background: transparent;
+            border: none;
+            color: #f8fafc;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            opacity: 0.7;
+        }
+
+        .nav-link:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: scale(0.98);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 20px;
+            border-radius: 40px;
+            color: #f8fafc;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.2s;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #3b82f6;
+        }
+
+        a.btn-primary,
+        a.btn-outline {
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-sizing: border-box;
+        }
+
+        /* Menu mobile (drawer) */
+        .mobile-drawer {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 320px;
+            height: 100%;
+            background: #0f172a;
+            z-index: 2000;
+            padding: 24px;
+            transition: right 0.3s ease;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: -5px 0 30px rgba(0,0,0,0.5);
+        }
+
+        .mobile-drawer.open {
+            right: 0;
+        }
+
+        .drawer-close {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: white;
+            font-size: 1.3rem;
+            cursor: pointer;
+            margin-bottom: 40px;
+            float: right;
+        }
+
+        .mobile-nav-item {
+            list-style: none;
+            margin-bottom: 16px;
+        }
+
+        .mobile-nav-btn {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: none;
+            padding: 14px 20px;
+            border-radius: 20px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        /* Grilles flex */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .grid-skills {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        /* Hero : deux colonnes alignées, photo = hauteur du bloc texte */
+        .hero-grid {
+            grid-template-columns: 1fr 1fr;
+            align-items: stretch;
+            gap: 24px;
+        }
+
+        .hero-text {
+            min-height: 380px;
+        }
+
+        /* Portrait : pas de carte / fond — photo posée sur le dégradé de la page */
+        .hero-portrait-card {
+            min-height: 380px;
+            position: relative;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            box-sizing: border-box;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .hero-portrait-card img {
+            --hero-photo-inset: clamp(6px, 1.5vw, 14px);
+            position: absolute;
+            left: var(--hero-photo-inset);
+            top: var(--hero-photo-inset);
+            width: calc(100% - 2 * var(--hero-photo-inset));
+            height: calc(100% - 2 * var(--hero-photo-inset));
+            object-fit: contain;
+            object-position: center center;
+            display: block;
+        }
+
+        .hero-portrait-card .hero-portrait-caption {
+            padding: 20px;
+        }
+
+        .hero-portrait-card .hero-portrait-caption span {
+            font-size: 0.95rem;
+            padding: 6px 14px;
+        }
+
+        .hero-portrait-card .hero-portrait-caption p {
+            font-size: 0.85rem;
+            margin-top: 10px;
+        }
+
+        /* Badge / chip */
+        .chip {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            display: inline-block;
+            width: fit-content;
+        }
+
+        /* responsive */
+        @media (max-width: 900px) {
+            .grid-4, .grid-skills {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+                /* stretch : si center, la carte photo sans flux interne → largeur ~0, image invisible */
+                justify-items: stretch;
+            }
+
+            .hero-grid .hero-text {
+                width: 100%;
+                min-height: unset;
+            }
+
+            .hero-grid > .hero-text,
+            .hero-grid > .hero-portrait-card {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .hero-portrait-card {
+                min-height: 260px;
+                max-height: min(72vh, 520px);
+                aspect-ratio: 4 / 5;
+            }
+            .navbar {
+                width: 94%;
+                padding: 6px 16px;
+            }
+            .nav-links {
+                display: none;
+            }
+            .container {
+                padding: 0 20px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .grid-4, .grid-skills {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* section spacing */
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 28px;
+            margin-top: 24px;
+            letter-spacing: -0.02em;
+        }
+
+        footer {
+            background: #050505;
+            text-align: center;
+            padding: 60px 24px;
+        }
+
+        .badge-icon {
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 20px;
+            padding: 12px;
+            display: inline-flex;
+            color: #3b82f6;
+        }
+
+        hr {
+            border-color: rgba(255,255,255,0.1);
+            margin: 24px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER FIXE -->
+    <div class="navbar" id="navbar">
+        <div class="logo" onclick="window.scrollTo({top:0, behavior:'smooth'})">DP</div>
+        <div class="nav-links">
+            <button class="nav-link" onclick="scrollToSection('profile')">Profil</button>
+            <button class="nav-link" onclick="scrollToSection('skills')">Compétences</button>
+            <button class="nav-link" onclick="scrollToSection('experience')">Parcours</button>
+            <button class="nav-link" onclick="scrollToSection('education')">Formations</button>
+            <button class="nav-link" onclick="scrollToSection('contact')">Contact</button>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: center;">
+            <button class="btn-primary" onclick="scrollToSection('contact')">Parlons-en</button>
+            <button class="btn-outline" id="menuToggle" style="display: none; padding: 6px 12px;" aria-label="menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- DRAWER MOBILE -->
+    <div id="mobileDrawer" class="mobile-drawer">
+        <button class="drawer-close" id="closeDrawerBtn"><i class="fas fa-times"></i></button>
+        <div style="clear:both"></div>
+        <ul style="margin-top: 30px;">
+            <li class="mobile-nav-item"><button class="mobile-nav-btn" onclick="scrollToSection('profile'); closeDrawer();">Profil</button></li>
+            <li class="mobile-nav-item"><button class="mobile-nav-btn" onclick="scrollToSection('skills'); closeDrawer();">Compétences</button></li>
+            <li class="mobile-nav-item"><button class="mobile-nav-btn" onclick="scrollToSection('experience'); closeDrawer();">Parcours</button></li>
+            <li class="mobile-nav-item"><button class="mobile-nav-btn" onclick="scrollToSection('education'); closeDrawer();">Formations</button></li>
+            <li class="mobile-nav-item"><button class="mobile-nav-btn" onclick="scrollToSection('contact'); closeDrawer();">Contact</button></li>
+        </ul>
+    </div>
+
+    <!-- MAIN BACKGROUND GRADIENT -->
+    <div style="min-height: 100vh; background: radial-gradient(circle at 50% 0%, #1e293b 0%, #050505 100%); padding-top: 110px; padding-bottom: 60px;">
+        <div class="container">
+
+            <!-- HERO + PORTRAIT (grid 2) -->
+            <div class="grid-2 hero-grid" style="margin-bottom: 24px;">
+                <!-- Hero bloc -->
+                <div class="glass-card animate-up hero-text" id="profile" style="padding: 40px 32px; display: flex; flex-direction: column; justify-content: center; box-sizing: border-box;">
+                    <div class="chip" style="margin-bottom: 20px;">Technicien Réseau Télécom &amp; Développeur</div>
+                    <h1 style="font-size: clamp(2rem, 6vw, 3.8rem); font-weight: 800; margin-bottom: 12px; letter-spacing: -0.03em;">
+                        Destiné <span style="color: #3b82f6;">POUGAZA</span>
+                    </h1>
+                    <p style="color: #94a3b8; line-height: 1.65; max-width: 100%; font-size: 1.02rem;">
+                        Passionné d'informatique, je mets mes expériences des réseaux et du développement pour créer des solutions innovantes et efficaces. Mon objectif est de contribuer au succès des projets grâce à des compétences techniques pointues et une approche créative.
+                    </p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px;">
+                        <a class="btn-primary" href="cv.pdf" download="CV_Destine_Pougaza.pdf"><i class="fas fa-file-download"></i> Télécharger le CV</a>
+                        <button type="button" class="btn-outline" onclick="window.open('http://fortdestinepougaza.wixsite.com/monsite', '_blank')"><i class="fas fa-globe"></i> Site web</button>
+                        <button type="button" class="btn-outline" onclick="scrollToSection('contact')"><i class="fas fa-envelope"></i> Me contacter</button>
+                    </div>
+                </div>
+
+                <!-- Portrait -->
+                <div class="hero-portrait-card">
+                    <img src="top.png" alt="Destiné POUGAZA" width="800" height="1000" decoding="async">
+                    <div class="hero-portrait-caption" style="position: absolute; bottom: 0; left: 0; right: 0; z-index: 1; background: linear-gradient(transparent, rgba(0,0,0,0.82)); text-align: center;">
+                        <span style="background: rgba(0,0,0,0.5); border-radius: 50px;">Bangui, RCA</span>
+                        <p style="color: #cbd5e1;">Expertise Locale & Internationale</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION COMPÉTENCES (CV) -->
+            <div id="skills">
+                <h2 class="section-title">Compétences</h2>
+                <div class="grid-skills">
+                    <div class="glass-card" style="padding: 28px 24px;">
+                        <i class="fas fa-shield-alt" style="font-size: 2.2rem; color: #3b82f6; margin-bottom: 18px; display: inline-block;"></i>
+                        <h3 style="font-weight: 800; margin-bottom: 14px;">Supervision et sécurité</h3>
+                        <ul style="list-style: none; color: #94a3b8; font-size: 0.85rem; line-height: 1.6;">
+                            <li>• Superviseur réseau</li>
+                            <li>• Sécurité du système SI</li>
+                        </ul>
+                    </div>
+                    <div class="glass-card" style="padding: 28px 24px;">
+                        <i class="fas fa-code" style="font-size: 2.2rem; color: #3b82f6; margin-bottom: 18px;"></i>
+                        <h3 style="font-weight: 800; margin-bottom: 14px;">Développement web</h3>
+                        <ul style="list-style: none; color: #94a3b8; font-size: 0.85rem; line-height: 1.6;">
+                            <li>• Connaissance moyenne en HTML, CSS et JavaScript</li>
+                        </ul>
+                    </div>
+                    <div class="glass-card" style="padding: 28px 24px;">
+                        <i class="fas fa-database" style="font-size: 2.2rem; color: #3b82f6; margin-bottom: 18px;"></i>
+                        <h3 style="font-weight: 800; margin-bottom: 14px;">Gestion des bases de données</h3>
+                        <ul style="list-style: none; color: #94a3b8; font-size: 0.85rem; line-height: 1.6;">
+                            <li>• MySQL, PostgreSQL et MongoDB</li>
+                        </ul>
+                    </div>
+                    <div class="glass-card" style="padding: 28px 24px;">
+                        <i class="fas fa-network-wired" style="font-size: 2.2rem; color: #3b82f6; margin-bottom: 18px;"></i>
+                        <h3 style="font-weight: 800; margin-bottom: 14px;">Réseau &amp; systèmes</h3>
+                        <ul style="list-style: none; color: #94a3b8; font-size: 0.85rem; line-height: 1.6;">
+                            <li>• Installation d'équipements : microwave, wireless, IP clocks, Smartcare, etc.</li>
+                            <li>• Administration système et réseau Windows et Linux</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION EXPÉRIENCES + FORMATIONS (CV) -->
+            <div class="grid-2" style="margin-top: 32px;" id="experience">
+                <div class="glass-card" style="padding: 32px 28px;">
+                    <h3 style="font-size: 0.85rem; letter-spacing: 2px; color: #3b82f6; margin-bottom: 24px; font-weight: 800;">EXPÉRIENCES</h3>
+                    <div style="border-left: 3px solid #3b82f6; padding-left: 20px;">
+                        <h4 style="font-weight: 800; font-size: 1.15rem;">Directeur technique</h4>
+                        <p style="color: #3b82f6; font-weight: 600; margin: 6px 0;">EPITECH SARL RCA</p>
+                        <span style="color: #94a3b8; font-size: 0.8rem;">2025 — Actuel</span>
+                        <ul style="list-style: none; color: #94a3b8; font-size: 0.88rem; line-height: 1.65; margin-top: 16px;">
+                            <li style="margin-bottom: 10px;">• Installation des équipements réseau : microwave, wireless, IP clocks, Smartcare et bien d'autres</li>
+                            <li style="margin-bottom: 10px;">• Participation aux réunions de suivi des projets</li>
+                            <li style="margin-bottom: 10px;">• Administrateur système et réseau Windows et Linux</li>
+                            <li>• Bases de données : MySQL, PostgreSQL et MongoDB</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="glass-card" style="padding: 32px 28px;" id="education">
+                    <h3 style="font-size: 0.85rem; letter-spacing: 2px; color: #3b82f6; margin-bottom: 24px; font-weight: 800;">FORMATIONS</h3>
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div style="background: rgba(255,255,255,0.03); border-radius: 20px; padding: 20px; border: 1px solid rgba(255,255,255,0.05);">
+                            <span style="color: #3b82f6; font-size: 0.75rem; font-weight: 700;">2023 — 2024</span>
+                            <h4 style="font-weight: 800; margin-top: 8px;">Licence en réseau et télécommunications</h4>
+                            <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 8px;">École Centrale des Logiciels Libres et de Télécommunications (EC2LT), Liberté 2 — Dakar</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); border-radius: 20px; padding: 20px; border: 1px solid rgba(255,255,255,0.05);">
+                            <span style="color: #3b82f6; font-size: 0.75rem; font-weight: 700;">2019 — 2022</span>
+                            <h4 style="font-weight: 800; margin-top: 8px;">Certificat en programmation d'application</h4>
+                            <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 8px;">ITIM RCA (O.N.I)</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); border-radius: 20px; padding: 20px; border: 1px solid rgba(255,255,255,0.05);">
+                            <span style="color: #3b82f6; font-size: 0.75rem; font-weight: 700;">2014 — 2017</span>
+                            <h4 style="font-weight: 800; margin-top: 8px;">Baccalauréat série A4</h4>
+                            <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 8px;">Lycée des Martyrs de Bangui</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION CONTACT (CV) -->
+            <div id="contact" style="margin-top: 48px;">
+                <div class="glass-card" style="padding: 40px 32px;">
+                    <h3 style="font-size: 0.85rem; letter-spacing: 2px; color: #3b82f6; margin-bottom: 24px; font-weight: 800;">CONTACTS</h3>
+                    <p style="margin-bottom: 24px;">
+                        <a class="btn-primary" href="cv.pdf" download="CV_Destine_Pougaza.pdf"><i class="fas fa-file-pdf"></i> Télécharger le CV (PDF)</a>
+                    </p>
+                    <div class="grid-4" style="margin-bottom: 24px;">
+                        <div style="display: flex; gap: 16px; align-items: flex-start;">
+                            <div class="badge-icon"><i class="fas fa-phone-alt"></i></div>
+                            <div>
+                                <div style="font-size: 0.7rem; color: #94a3b8;">Téléphone</div>
+                                <div style="font-weight: 700;"><a href="tel:+23672082626" style="color: inherit; text-decoration: none;">+236 72 082626</a></div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 16px; align-items: flex-start;">
+                            <div class="badge-icon"><i class="fas fa-envelope" style="font-size: 1.3rem;"></i></div>
+                            <div>
+                                <div style="font-size: 0.7rem; color: #94a3b8;">Email</div>
+                                <div style="font-weight: 700; word-break: break-all;"><a href="mailto:fort.destinepougaza@gmail.com" style="color: inherit; text-decoration: none;">fort.destinepougaza@gmail.com</a></div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 16px; align-items: flex-start;">
+                            <div class="badge-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div>
+                                <div style="font-size: 0.7rem; color: #94a3b8;">Adresse</div>
+                                <div style="font-weight: 700;">Fouh, 8<sup>e</sup> Arrdt — Bangui, RCA</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 16px; align-items: flex-start;">
+                            <div class="badge-icon"><i class="fas fa-globe"></i></div>
+                            <div>
+                                <div style="font-size: 0.7rem; color: #94a3b8;">Site web</div>
+                                <div style="font-weight: 700; word-break: break-all;"><a href="http://fortdestinepougaza.wixsite.com/monsite" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: none;">fortdestinepougaza.wixsite.com/monsite</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+                        <span style="font-weight: 600;">Langues :</span>
+                        <span class="chip" style="background: rgba(255,255,255,0.05); color: #cbd5e1;">Français</span>
+                        <span class="chip" style="background: rgba(255,255,255,0.05); color: #cbd5e1;">Anglais</span>
+                        <span class="chip" style="background: rgba(255,255,255,0.05); color: #cbd5e1;">Sango</span>
+                        <span class="chip" style="background: rgba(255,255,255,0.05); color: #cbd5e1;">Lingala</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Atouts & centres d'intérêt (CV) -->
+            <div style="margin-top: 48px; display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between;">
+                <div class="glass-card" style="flex: 1; min-width: 260px; padding: 28px;">
+                    <h3 style="color:#3b82f6; font-weight:800; margin-bottom:20px;">Atouts</h3>
+                    <ul style="list-style: none; color: #94a3b8; font-size: 0.9rem; line-height: 1.75;">
+                        <li>• Résolution des problèmes complexes</li>
+                        <li>• Capacité d'analyse et diagnostic</li>
+                        <li>• Esprit d'équipe et communication</li>
+                        <li>• Créativité et rigueur dans l'exécution</li>
+                    </ul>
+                </div>
+                <div class="glass-card" style="flex: 1; min-width: 260px; padding: 28px;">
+                    <h3 style="color:#3b82f6; font-weight:800; margin-bottom:20px;">Centre d'intérêt</h3>
+                    <div style="display: flex; gap: 20px; flex-wrap: wrap; color: #cbd5e1;">
+                        <span><i class="fas fa-futbol" style="color:#3b82f6; margin-right:8px;"></i> Sports</span>
+                        <span><i class="fas fa-headphones" style="color:#3b82f6; margin-right:8px;"></i> Musique</span>
+                        <span><i class="fas fa-microchip" style="color:#3b82f6; margin-right:8px;"></i> Veille technologique</span>
+                    </div>
+                </div>
+            </div>
+
+        </div> <!-- fin container -->
+    </div> <!-- fin gradient background -->
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="logo" style="font-size: 2rem; margin-bottom: 16px;">DP</div>
+        <p style="opacity: 0.6; font-size: 0.85rem;">© 2026 DESTINÉ POUGAZA — Tous droits réservés.</p>
+        <p style="opacity: 0.4; font-size: 0.7rem; margin-top: 10px;">Conçu avec HTML/CSS & inspiré de React/MUI</p>
+    </footer>
+
+    <script>
+        // Gestion smooth scroll
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                const offset = 100;
+                const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+                window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' });
+            }
+            closeDrawer();
+        }
+
+        // Drawer mobile
+        const drawer = document.getElementById('mobileDrawer');
+        const menuToggle = document.getElementById('menuToggle');
+        const closeBtn = document.getElementById('closeDrawerBtn');
+
+        function openDrawer() {
+            drawer.classList.add('open');
+        }
+        function closeDrawer() {
+            drawer.classList.remove('open');
+        }
+
+        // Affichage conditionnel du bouton menu (responsive)
+        function checkMenuButton() {
+            if (window.innerWidth <= 900) {
+                menuToggle.style.display = 'inline-flex';
+            } else {
+                menuToggle.style.display = 'none';
+                closeDrawer(); // si desktop on ferme le drawer
+            }
+        }
+
+        menuToggle.addEventListener('click', openDrawer);
+        closeBtn.addEventListener('click', closeDrawer);
+        window.addEventListener('resize', checkMenuButton);
+        checkMenuButton();
+
+        // option: fermer le drawer si on clique sur un lien
+        window.closeDrawer = closeDrawer;
+        window.scrollToSection = scrollToSection;
+
+        // animation d'apparition au scroll légère (simple)
+        const cards = document.querySelectorAll('.glass-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        cards.forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.4s ease';
+            observer.observe(card);
+        });
+        // forcer premier affichage
+        setTimeout(() => {
+            cards.forEach(c => {
+                if (c.getBoundingClientRect().top < window.innerHeight-100) {
+                    c.style.opacity = '1';
+                    c.style.transform = 'translateY(0)';
+                }
+            });
+        }, 100);
+    </script>
+</body>
+</html>
